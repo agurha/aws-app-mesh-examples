@@ -1,0 +1,5 @@
+.env*
+examples/apps/rgc/pkg/
+examples/apps/rgc/bin
+.DS_Store
+.idea

@@ -1,0 +1,23 @@
+{
+    "routeName": "searchservice-route",
+    "spec": {
+        "httpRoute": {
+            "action": {
+                "weightedTargets": [
+                    {
+                        "virtualNode": "searchservice-black-vn",
+                        "weight": 8
+                    },
+                    {
+                        "virtualNode": "searchservice-blue-vn",
+                        "weight": 2
+                    }
+                ]
+            },
+            "match": {
+                "prefix": "/"
+            }
+        }
+    },
+    "virtualRouterName": "searchservice-vr"
+}
