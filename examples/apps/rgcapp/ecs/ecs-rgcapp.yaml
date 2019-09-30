@@ -45,7 +45,7 @@ Parameters:
     AllowedValues:
       - true
       - false
-    Description: Set to "true" to include the TesterService (to generate color history)
+    Description: Set to "true" to include the TesterService (to generate tag history)
 
 Conditions:
   ShouldDeployTester:
@@ -53,10 +53,10 @@ Conditions:
 
 Resources:
 
-  SearchServiceWhiteServiceDiscoveryRecord:
+  SearchServiceMicrosoftServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
-      Name: "colorteller"
+      Name: "searchservice"
       DnsConfig:
         NamespaceId:
           'Fn::ImportValue': !Sub "${EnvironmentName}:ECSServiceDiscoveryNamespace"
@@ -66,7 +66,7 @@ Resources:
       HealthCheckCustomConfig:
         FailureThreshold: 1
 
-  SearchServiceWhiteService:
+  SearchServiceMicrosoftService:
     Type: 'AWS::ECS::Service'
     Properties:
       Cluster:
@@ -78,7 +78,7 @@ Resources:
       LaunchType: EC2
       ServiceRegistries:
         - RegistryArn:
-            'Fn::GetAtt': SearchServiceWhiteServiceDiscoveryRecord.Arn
+            'Fn::GetAtt': SearchServiceMicrosoftServiceDiscoveryRecord.Arn
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
@@ -89,10 +89,10 @@ Resources:
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
       TaskDefinition: { Ref: SearchServiceWhiteTaskDefinition }
 
-  SearchServiceBlueServiceDiscoveryRecord:
+  SearchServiceAppleServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
-      Name: "colorteller-blue"
+      Name: "searchservice-blue"
       DnsConfig:
         NamespaceId:
           'Fn::ImportValue': !Sub "${EnvironmentName}:ECSServiceDiscoveryNamespace"
@@ -102,7 +102,7 @@ Resources:
       HealthCheckCustomConfig:
         FailureThreshold: 1
 
-  SearchServiceBlueService:
+  SearchServiceAppleService:
     Type: 'AWS::ECS::Service'
     Properties:
       Cluster:
@@ -114,7 +114,7 @@ Resources:
       LaunchType: EC2
       ServiceRegistries:
         - RegistryArn:
-            'Fn::GetAtt': SearchServiceBlueServiceDiscoveryRecord.Arn
+            'Fn::GetAtt': SearchServiceAppleServiceDiscoveryRecord.Arn
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
@@ -125,10 +125,10 @@ Resources:
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
       TaskDefinition: { Ref: SearchServiceBlueTaskDefinition }
 
-  SearchServiceRedServiceDiscoveryRecord:
+  SearchServiceDropboxServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
-      Name: "colorteller-red"
+      Name: "searchservice-dropbox"
       DnsConfig:
         NamespaceId:
           'Fn::ImportValue': !Sub "${EnvironmentName}:ECSServiceDiscoveryNamespace"
@@ -138,7 +138,7 @@ Resources:
       HealthCheckCustomConfig:
         FailureThreshold: 1
 
-  SearchServiceRedService:
+  SearchServiceDropboxService:
     Type: 'AWS::ECS::Service'
     Properties:
       Cluster:
@@ -150,7 +150,7 @@ Resources:
       LaunchType: EC2
       ServiceRegistries:
         - RegistryArn:
-            'Fn::GetAtt': SearchServiceRedServiceDiscoveryRecord.Arn
+            'Fn::GetAtt': SearchServiceDropboxServiceDiscoveryRecord.Arn
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
@@ -161,10 +161,10 @@ Resources:
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
       TaskDefinition: { Ref: SearchServiceRedTaskDefinition }
 
-  SearchServiceBlackServiceDiscoveryRecord:
+  SearchServiceTeslaServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
-      Name: "colorteller-black"
+      Name: "searchservice-tesla"
       DnsConfig:
         NamespaceId:
           'Fn::ImportValue': !Sub "${EnvironmentName}:ECSServiceDiscoveryNamespace"
@@ -174,7 +174,7 @@ Resources:
       HealthCheckCustomConfig:
         FailureThreshold: 1
 
-  SearchServiceBlackService:
+  SearchServiceTeslaService:
     Type: 'AWS::ECS::Service'
     Properties:
       Cluster:
@@ -186,7 +186,7 @@ Resources:
       LaunchType: EC2
       ServiceRegistries:
         - RegistryArn:
-            'Fn::GetAtt': SearchServiceBlackServiceDiscoveryRecord.Arn
+            'Fn::GetAtt': SearchServiceTeslaServiceDiscoveryRecord.Arn
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
@@ -200,7 +200,7 @@ Resources:
   ResearchPreferencesServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
-      Name: "colorgateway"
+      Name: "researchpreferences"
       DnsConfig:
         NamespaceId:
           'Fn::ImportValue': !Sub "${EnvironmentName}:ECSServiceDiscoveryNamespace"
@@ -270,7 +270,7 @@ Resources:
           Image: "tstrohmeier/alpine-infinite-curl"
           Essential: true
           Command:
-            - !Sub "-h http://colorgateway.${ECSServicesDomain}:9080/color"
+            - !Sub "-h http://researchpreferences.${ECSServicesDomain}:9080/tag"
           LogConfiguration:
             LogDriver: "awslogs"
             Options:
@@ -362,7 +362,6 @@ Resources:
           - CidrIp: 0.0.0.0/0
             IpProtocol: -1
 
-  # public ALB for color gateway
   PublicLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
