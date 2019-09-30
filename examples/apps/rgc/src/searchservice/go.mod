@@ -1,4 +1,4 @@
-module github.com/aws/aws-app-mesh-examples/colorapp/teller
+module github.com/aws/aws-app-mesh-examples/rgcapp/searchservice
 
 go 1.12
 

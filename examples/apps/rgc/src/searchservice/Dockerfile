@@ -1,6 +1,6 @@
 FROM golang:1-stretch as builder
 ARG GO_PROXY=https://proxy.golang.org
-WORKDIR /go/src/github.com/aws/aws-app-mesh-examples/colorapp/teller
+WORKDIR /go/src/github.com/agurha/aws-app-mesh-examples/rgcapp/searchservice
 
 # Force the go compiler to use modules.
 ENV GO111MODULE=on
@@ -14,10 +14,10 @@ RUN go env -w GOPROXY=${GO_PROXY}
 RUN go mod download
 
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o /aws-app-mesh-examples-colorapp-teller .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o /aws-app-mesh-examples-rgcapp-searchservice .
 
 FROM amazonlinux:2
 RUN yum install -y ca-certificates
-COPY --from=builder /aws-app-mesh-examples-colorapp-teller /bin/aws-app-mesh-examples-colorapp-teller
+COPY --from=builder /aws-app-mesh-examples-rgcapp-searchservice /bin/aws-app-mesh-examples-rgcapp-searchservice
 
-ENTRYPOINT ["/bin/aws-app-mesh-examples-colorapp-teller"]
+ENTRYPOINT ["/bin/aws-app-mesh-examples-rgcapp-searchservice"]

@@ -12,25 +12,25 @@ Parameters:
     Type: String
     Description: DNS namespace used by services e.g. default.svc.cluster.local
 
-  ColorGatewayTaskDefinition:
+  ResearchPreferencesTaskDefinition:
     Type: String
-    Description: Task definition for ColorGateway Service
+    Description: Task definition for ResearchPreferences Service
 
-  ColorTellerWhiteTaskDefinition:
+  SearchServiceWhiteTaskDefinition:
     Type: String
-    Description: Task definition for ColorTeller White Service
+    Description: Task definition for SearchService White Service
 
-  ColorTellerRedTaskDefinition:
+  SearchServiceRedTaskDefinition:
     Type: String
-    Description: Task definition for ColorTeller Red Service
+    Description: Task definition for SearchService Red Service
 
-  ColorTellerBlueTaskDefinition:
+  SearchServiceBlueTaskDefinition:
     Type: String
-    Description: Task definition for ColorTeller Blue Service
+    Description: Task definition for SearchService Blue Service
 
-  ColorTellerBlackTaskDefinition:
+  SearchServiceBlackTaskDefinition:
     Type: String
-    Description: Task definition for ColorTeller Black Service
+    Description: Task definition for SearchService Black Service
 
   LoadBalancerPath:
     Type: String
@@ -53,8 +53,7 @@ Conditions:
 
 Resources:
 
-  ### colorteller.default.svc.cluster.local
-  ColorTellerWhiteServiceDiscoveryRecord:
+  SearchServiceWhiteServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
       Name: "colorteller"
@@ -67,7 +66,7 @@ Resources:
       HealthCheckCustomConfig:
         FailureThreshold: 1
 
-  ColorTellerWhiteService:
+  SearchServiceWhiteService:
     Type: 'AWS::ECS::Service'
     Properties:
       Cluster:
@@ -79,7 +78,7 @@ Resources:
       LaunchType: EC2
       ServiceRegistries:
         - RegistryArn:
-            'Fn::GetAtt': ColorTellerWhiteServiceDiscoveryRecord.Arn
+            'Fn::GetAtt': SearchServiceWhiteServiceDiscoveryRecord.Arn
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
@@ -88,10 +87,9 @@ Resources:
           Subnets: 
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet1"
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
-      TaskDefinition: { Ref: ColorTellerWhiteTaskDefinition }
+      TaskDefinition: { Ref: SearchServiceWhiteTaskDefinition }
 
-  ### colorteller-blue.default.svc.cluster.local
-  ColorTellerBlueServiceDiscoveryRecord:
+  SearchServiceBlueServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
       Name: "colorteller-blue"
@@ -104,7 +102,7 @@ Resources:
       HealthCheckCustomConfig:
         FailureThreshold: 1
 
-  ColorTellerBlueService:
+  SearchServiceBlueService:
     Type: 'AWS::ECS::Service'
     Properties:
       Cluster:
@@ -116,7 +114,7 @@ Resources:
       LaunchType: EC2
       ServiceRegistries:
         - RegistryArn:
-            'Fn::GetAtt': ColorTellerBlueServiceDiscoveryRecord.Arn
+            'Fn::GetAtt': SearchServiceBlueServiceDiscoveryRecord.Arn
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
@@ -125,10 +123,9 @@ Resources:
           Subnets: 
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet1"
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
-      TaskDefinition: { Ref: ColorTellerBlueTaskDefinition }
+      TaskDefinition: { Ref: SearchServiceBlueTaskDefinition }
 
-  ### colorteller-red.default.svc.cluster.local
-  ColorTellerRedServiceDiscoveryRecord:
+  SearchServiceRedServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
       Name: "colorteller-red"
@@ -141,7 +138,7 @@ Resources:
       HealthCheckCustomConfig:
         FailureThreshold: 1
 
-  ColorTellerRedService:
+  SearchServiceRedService:
     Type: 'AWS::ECS::Service'
     Properties:
       Cluster:
@@ -153,7 +150,7 @@ Resources:
       LaunchType: EC2
       ServiceRegistries:
         - RegistryArn:
-            'Fn::GetAtt': ColorTellerRedServiceDiscoveryRecord.Arn
+            'Fn::GetAtt': SearchServiceRedServiceDiscoveryRecord.Arn
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
@@ -162,10 +159,9 @@ Resources:
           Subnets: 
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet1"
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
-      TaskDefinition: { Ref: ColorTellerRedTaskDefinition }
+      TaskDefinition: { Ref: SearchServiceRedTaskDefinition }
 
-  ### colorteller-black.default.svc.cluster.local
-  ColorTellerBlackServiceDiscoveryRecord:
+  SearchServiceBlackServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
       Name: "colorteller-black"
@@ -178,7 +174,7 @@ Resources:
       HealthCheckCustomConfig:
         FailureThreshold: 1
 
-  ColorTellerBlackService:
+  SearchServiceBlackService:
     Type: 'AWS::ECS::Service'
     Properties:
       Cluster:
@@ -190,7 +186,7 @@ Resources:
       LaunchType: EC2
       ServiceRegistries:
         - RegistryArn:
-            'Fn::GetAtt': ColorTellerBlackServiceDiscoveryRecord.Arn
+            'Fn::GetAtt': SearchServiceBlackServiceDiscoveryRecord.Arn
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
@@ -199,10 +195,9 @@ Resources:
           Subnets: 
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet1"
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
-      TaskDefinition: { Ref: ColorTellerBlackTaskDefinition }
+      TaskDefinition: { Ref: SearchServiceBlackTaskDefinition }
 
-  ### colorgateway.default.svc.cluster.local
-  ColorGatewayServiceDiscoveryRecord:
+  ResearchPreferencesServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
       Name: "colorgateway"
@@ -215,7 +210,7 @@ Resources:
       HealthCheckCustomConfig:
         FailureThreshold: 1
 
-  ColorGatewayService:
+  ResearchPreferencesService:
     Type: 'AWS::ECS::Service'
     DependsOn:
       - WebLoadBalancerRule
@@ -229,7 +224,7 @@ Resources:
       LaunchType: EC2
       ServiceRegistries:
         - RegistryArn:
-            'Fn::GetAtt': ColorGatewayServiceDiscoveryRecord.Arn
+            'Fn::GetAtt': ResearchPreferencesServiceDiscoveryRecord.Arn
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
@@ -238,7 +233,7 @@ Resources:
           Subnets: 
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet1"
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
-      TaskDefinition: { Ref: ColorGatewayTaskDefinition }
+      TaskDefinition: { Ref: ResearchPreferencesTaskDefinition }
       LoadBalancers:
         - ContainerName: app
           ContainerPort: 9080
@@ -425,7 +420,7 @@ Resources:
 
 Outputs: 
 
-  ColorAppEndpoint:
-    Description: Public endpoint for Color App service
+  RGCAppEndpoint:
+    Description: Public endpoint for RGC App service
     Value: !Join ['', ['http://', !GetAtt 'PublicLoadBalancer.DNSName']]
 

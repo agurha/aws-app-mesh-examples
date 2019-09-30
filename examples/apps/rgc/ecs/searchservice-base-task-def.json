@@ -39,16 +39,12 @@
       ],
       "environment": [
         {
+          "name": "TAGS",
+          "value": $TAGS
+        },
+        {
           "name": "SERVER_PORT",
           "value": "9080"
-        },
-        {
-          "name": "COLOR_TELLER_ENDPOINT",
-          "value": $COLOR_TELLER_ENDPOINT
-        },
-        {
-          "name": "TCP_ECHO_ENDPOINT",
-          "value": $TCP_ECHO_ENDPOINT
         },
         {
           "name": "STAGE",
@@ -62,7 +58,7 @@
           "awslogs-region": $AWS_REGION,
           "awslogs-stream-prefix": $AWS_LOG_STREAM_PREFIX_APP
         }
-      },  
+      },
       "essential": true,
       "dependsOn": [
         {
