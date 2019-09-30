@@ -21,9 +21,9 @@ aws --profile "${AWS_PROFILE}" --region "${AWS_DEFAULT_REGION}" \
     ECSServicesDomain="${SERVICES_DOMAIN}" \
     AppMeshMeshName="${MESH_NAME}" \
     ResearchPreferencesTaskDefinition="${researchpreferences_task_def_arn}" \
-    SearchServiceWhiteTaskDefinition="${searchservice_white_task_def_arn}" \
-    SearchServiceRedTaskDefinition="${searchservice_red_task_def_arn}" \
-    SearchServiceBlueTaskDefinition="${searchservice_blue_task_def_arn}" \
-    SearchServiceBlackTaskDefinition="${searchservice_black_task_def_arn}" \
+    SearchServiceWhiteTaskDefinition="${searchservice_microsoft_task_def_arn}" \
+    SearchServiceRedTaskDefinition="${searchservice_dropbox_task_def_arn}" \
+    SearchServiceBlueTaskDefinition="${searchservice_apple_task_def_arn}" \
+    SearchServiceBlackTaskDefinition="${searchservice_tesla_task_def_arn}" \
     DeployTester="${DEPLOY_TESTER}"
 

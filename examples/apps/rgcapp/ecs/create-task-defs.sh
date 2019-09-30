@@ -100,25 +100,25 @@ task_def_json=$(jq -n \
 task_def=$(aws --profile "${AWS_PROFILE}" --region "${AWS_DEFAULT_REGION}" \
     ecs register-task-definition \
     --cli-input-json "$task_def_json")
-colorgateway_task_def_arn=($(echo $task_def \
+researchpreferences_task_def_arn=($(echo $task_def \
     | jq -r '.taskDefinition | .taskDefinitionArn'))
 
-generate_sidecars "searchservice-white"
-generate_search_service_task_def "white"
-searchservice_white_task_def_arn=($(echo $task_def \
+generate_sidecars "searchservice-microsoft"
+generate_search_service_task_def "microsoft"
+searchservice_microsoft_task_def_arn=($(echo $task_def \
     | jq -r '.taskDefinition | .taskDefinitionArn'))
 
-generate_sidecars "searchservice-red"
-generate_search_service_task_def "red"
-searchservice_red_task_def_arn=($(echo $task_def \
+generate_sidecars "searchservice-dropbox"
+generate_search_service_task_def "dropbox"
+searchservice_dropbox_task_def_arn=($(echo $task_def \
     | jq -r '.taskDefinition | .taskDefinitionArn'))
 
-generate_sidecars "searchservice-blue"
-generate_search_service_task_def "blue"
-searchservice_blue_task_def_arn=($(echo $task_def \
+generate_sidecars "searchservice-apple"
+generate_search_service_task_def "apple"
+searchservice_apple_task_def_arn=($(echo $task_def \
     | jq -r '.taskDefinition | .taskDefinitionArn'))
 
-generate_sidecars "searchservice-black"
-generate_search_service_task_def "black"
-searchservice_black_task_def_arn=($(echo $task_def \
+generate_sidecars "searchservice-tesla"
+generate_search_service_task_def "tesla"
+searchservice_tesla_task_def_arn=($(echo $task_def \
     | jq -r '.taskDefinition | .taskDefinitionArn'))

@@ -16,21 +16,21 @@ Parameters:
     Type: String
     Description: Task definition for ResearchPreferences Service
 
-  SearchServiceWhiteTaskDefinition:
+  SearchServiceMicrosoftTaskDefinition:
     Type: String
-    Description: Task definition for SearchService White Service
+    Description: Task definition for SearchService Microsoft Service
 
-  SearchServiceRedTaskDefinition:
+  SearchServiceDropboxTaskDefinition:
     Type: String
-    Description: Task definition for SearchService Red Service
+    Description: Task definition for SearchService Dropbox Service
 
-  SearchServiceBlueTaskDefinition:
+  SearchServiceAppleTaskDefinition:
     Type: String
-    Description: Task definition for SearchService Blue Service
+    Description: Task definition for SearchService Apple Service
 
-  SearchServiceBlackTaskDefinition:
+  SearchServiceTeslaTaskDefinition:
     Type: String
-    Description: Task definition for SearchService Black Service
+    Description: Task definition for SearchService Tesla Service
 
   LoadBalancerPath:
     Type: String
@@ -92,7 +92,7 @@ Resources:
   SearchServiceAppleServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
-      Name: "searchservice-blue"
+      Name: "searchservice-apple"
       DnsConfig:
         NamespaceId:
           'Fn::ImportValue': !Sub "${EnvironmentName}:ECSServiceDiscoveryNamespace"
