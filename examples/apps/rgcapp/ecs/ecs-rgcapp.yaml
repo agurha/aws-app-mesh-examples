@@ -56,7 +56,7 @@ Resources:
   SearchServiceMicrosoftServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
     Properties:
-      Name: "searchservice"
+      Name: "searchservice-microsoft"
       DnsConfig:
         NamespaceId:
           'Fn::ImportValue': !Sub "${EnvironmentName}:ECSServiceDiscoveryNamespace"
@@ -87,7 +87,7 @@ Resources:
           Subnets: 
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet1"
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
-      TaskDefinition: { Ref: SearchServiceWhiteTaskDefinition }
+      TaskDefinition: { Ref: SearchServiceMicrosoftTaskDefinition }
 
   SearchServiceAppleServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
@@ -123,7 +123,7 @@ Resources:
           Subnets: 
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet1"
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
-      TaskDefinition: { Ref: SearchServiceBlueTaskDefinition }
+      TaskDefinition: { Ref: SearchServiceAppleTaskDefinition }
 
   SearchServiceDropboxServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
@@ -159,7 +159,7 @@ Resources:
           Subnets: 
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet1"
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
-      TaskDefinition: { Ref: SearchServiceRedTaskDefinition }
+      TaskDefinition: { Ref: SearchServiceDropboxTaskDefinition }
 
   SearchServiceTeslaServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
@@ -195,7 +195,7 @@ Resources:
           Subnets: 
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet1"
             - 'Fn::ImportValue': !Sub "${EnvironmentName}:PrivateSubnet2"
-      TaskDefinition: { Ref: SearchServiceBlackTaskDefinition }
+      TaskDefinition: { Ref: SearchServiceTeslaTaskDefinition }
 
   ResearchPreferencesServiceDiscoveryRecord:
     Type: 'AWS::ServiceDiscovery::Service'
