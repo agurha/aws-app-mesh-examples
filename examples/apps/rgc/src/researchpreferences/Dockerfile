@@ -1,6 +1,6 @@
 FROM golang:1-stretch as builder
 ARG GO_PROXY=https://proxy.golang.org
-WORKDIR /go/src/github.com/aws/aws-app-mesh-examples/colorapp/gateway
+WORKDIR /go/src/github.com/agurha/aws-app-mesh-examples/rgcapp/researchpreferences
 
 # Force the go compiler to use modules.
 ENV GO111MODULE=on
@@ -15,10 +15,10 @@ RUN go env -w GOPROXY=${GO_PROXY}
 RUN go mod download
 
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o /aws-app-mesh-examples-colorapp-gateway .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o /aws-app-mesh-examples-rgcapp-researchpreferences .
 
 FROM amazonlinux:2
 RUN yum install -y ca-certificates
-COPY --from=builder /aws-app-mesh-examples-colorapp-gateway /bin/aws-app-mesh-examples-colorapp-gateway
+COPY --from=builder /aws-app-mesh-examples-rgcapp-researchpreferences /bin/aws-app-mesh-examples-rgcapp-researchpreferences
 
-ENTRYPOINT ["/bin/aws-app-mesh-examples-colorapp-gateway"]
+ENTRYPOINT ["/bin/aws-app-mesh-examples-rgcapp-researchpreferences"]

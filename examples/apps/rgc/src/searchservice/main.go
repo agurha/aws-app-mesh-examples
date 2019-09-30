@@ -10,7 +10,7 @@ import (
 )
 
 const defaultPort = "8080"
-const defaultColor = "black"
+const defaultTag = "Tesla"
 const defaultStage = "default"
 
 func getServerPort() string {
@@ -22,13 +22,13 @@ func getServerPort() string {
 	return defaultPort
 }
 
-func getColor() string {
-	color := os.Getenv("COLOR")
-	if color != "" {
-		return color
+func getTag() string {
+	tag := os.Getenv("TAG")
+	if tag != "" {
+		return tag
 	}
 
-	return defaultColor
+	return defaultTag
 }
 
 func getStage() string {
@@ -40,13 +40,15 @@ func getStage() string {
 	return defaultStage
 }
 
-type colorHandler struct{}
-func (h *colorHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	log.Println("color requested, responding with", getColor())
-	fmt.Fprint(writer, getColor())
+type tagHandler struct{}
+
+func (h *tagHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	log.Println("color requested, responding with", getTag())
+	fmt.Fprint(writer, getTag())
 }
 
 type pingHandler struct{}
+
 func (h *pingHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	log.Println("ping requested, reponding with HTTP 200")
 	writer.WriteHeader(http.StatusOK)
@@ -54,8 +56,8 @@ func (h *pingHandler) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 
 func main() {
 	log.Println("starting server, listening on port " + getServerPort())
-	xraySegmentNamer := xray.NewFixedSegmentNamer(fmt.Sprintf("%s-colorteller-%s", getStage(), getColor()))
-	http.Handle("/", xray.Handler(xraySegmentNamer, &colorHandler{}))
+	xraySegmentNamer := xray.NewFixedSegmentNamer(fmt.Sprintf("%s-searchservice-%s", getStage(), getTag()))
+	http.Handle("/", xray.Handler(xraySegmentNamer, &tagHandler{}))
 	http.Handle("/ping", xray.Handler(xraySegmentNamer, &pingHandler{}))
 	http.ListenAndServe(":"+getServerPort(), nil)
 }

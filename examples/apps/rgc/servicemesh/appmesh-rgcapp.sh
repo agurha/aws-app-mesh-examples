@@ -12,4 +12,4 @@ aws --profile "${AWS_PROFILE}" --region "${AWS_DEFAULT_REGION}" \
     --parameter-overrides \
     EnvironmentName="${ENVIRONMENT_NAME}" \
     ServicesDomain="${SERVICES_DOMAIN}" \
-    ?:.L
+    AppMeshMeshName="${MESH_NAME}"

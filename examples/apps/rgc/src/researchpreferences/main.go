@@ -19,11 +19,11 @@ import (
 
 const defaultPort = "8080"
 const defaultStage = "default"
-const maxColors = 1000
+const maxTags = 1000
 
-var colors [maxColors]string
-var colorsIdx int
-var colorsMutext = &sync.Mutex{}
+var tags [maxTags]string
+var tagsIdx int
+var tagsMutext = &sync.Mutex{}
 
 func getServerPort() string {
 	port := os.Getenv("SERVER_PORT")
@@ -43,42 +43,42 @@ func getStage() string {
 	return defaultStage
 }
 
-func getColorTellerEndpoint() (string, error) {
-	colorTellerEndpoint := os.Getenv("COLOR_TELLER_ENDPOINT")
-	if colorTellerEndpoint == "" {
-		return "", errors.New("COLOR_TELLER_ENDPOINT is not set")
+func getSearchServiceEndpoint() (string, error) {
+	searchServiceEndpoint := os.Getenv("SEARCH_SERVICE_ENDPOINT")
+	if searchServiceEndpoint == "" {
+		return "", errors.New("SEARCH_SERVICE_ENDPOINT is not set")
 	}
-	return colorTellerEndpoint, nil
+	return searchServiceEndpoint, nil
 }
 
-type colorHandler struct{}
+type tagHandler struct{}
 
-func (h *colorHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	color, err := getColorFromColorTeller(request)
+func (h *tagHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	tag, err := getTagFromSearchService(request)
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
 		writer.Write([]byte("500 - Unexpected Error"))
 		return
 	}
 
-	colorsMutext.Lock()
-	defer colorsMutext.Unlock()
+	tagsMutext.Lock()
+	defer tagsMutext.Unlock()
 
-	addColor(color)
+	addTag(tag)
 	statsJson, err := json.Marshal(getRatios())
 	if err != nil {
-		fmt.Fprintf(writer, `{"color":"%s", "error":"%s"}`, color, err)
+		fmt.Fprintf(writer, `{"tag":"%s", "error":"%s"}`, tag, err)
 		return
 	}
-	fmt.Fprintf(writer, `{"color":"%s", "stats": %s}`, color, statsJson)
+	fmt.Fprintf(writer, `{"tag":"%s", "stats": %s}`, tag, statsJson)
 }
 
-func addColor(color string) {
-	colors[colorsIdx] = color
+func addTag(tag string) {
+	tags[tagsIdx] = tag
 
-	colorsIdx += 1
-	if colorsIdx >= maxColors {
-		colorsIdx = 0
+	tagsIdx += 1
+	if tagsIdx >= maxTags {
+		tagsIdx = 0
 	}
 }
 
@@ -86,7 +86,7 @@ func getRatios() map[string]float64 {
 	counts := make(map[string]int)
 	var total = 0
 
-	for _, c := range colors {
+	for _, c := range tags {
 		if c != "" {
 			counts[c] += 1
 			total += 1
@@ -102,28 +102,28 @@ func getRatios() map[string]float64 {
 	return ratios
 }
 
-type clearColorStatsHandler struct{}
+type clearTagStatsHandler struct{}
 
-func (h *clearColorStatsHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	colorsMutext.Lock()
-	defer colorsMutext.Unlock()
+func (h *clearTagStatsHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	tagsMutext.Lock()
+	defer tagsMutext.Unlock()
 
-	colorsIdx = 0
-	for i := range colors {
-		colors[i] = ""
+	tagsIdx = 0
+	for i := range tags {
+		tags[i] = ""
 	}
 
 	fmt.Fprint(writer, "cleared")
 }
 
-func getColorFromColorTeller(request *http.Request) (string, error) {
-	colorTellerEndpoint, err := getColorTellerEndpoint()
+func getTagFromSearchService(request *http.Request) (string, error) {
+	searchServiceEndpoint, err := getSearchServiceEndpoint()
 	if err != nil {
 		return "-n/a-", err
 	}
 
 	client := xray.Client(&http.Client{})
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%s", colorTellerEndpoint), nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%s", searchServiceEndpoint), nil)
 	if err != nil {
 		return "-n/a-", err
 	}
@@ -139,12 +139,12 @@ func getColorFromColorTeller(request *http.Request) (string, error) {
 		return "-n/a-", err
 	}
 
-	color := strings.TrimSpace(string(body))
-	if len(color) < 1 {
-		return "-n/a-", errors.New("Empty response from colorTeller")
+	tag := strings.TrimSpace(string(body))
+	if len(tag) < 1 {
+		return "-n/a-", errors.New("Empty response from searchService")
 	}
 
-	return color, nil
+	return tag, nil
 }
 
 func getTCPEchoEndpoint() (string, error) {
@@ -203,7 +203,7 @@ func (h *pingHandler) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 func main() {
 	log.Println("Starting server, listening on port " + getServerPort())
 
-	colorTellerEndpoint, err := getColorTellerEndpoint()
+	searchServiceEndpoint, err := getSearchServiceEndpoint()
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -212,13 +212,13 @@ func main() {
 		log.Println(err)
 	}
 
-	log.Println("Using color-teller at " + colorTellerEndpoint)
+	log.Println("Using search-service at " + searchServiceEndpoint)
 	log.Println("Using tcp-echo at " + tcpEchoEndpoint)
 
 	xraySegmentNamer := xray.NewFixedSegmentNamer(fmt.Sprintf("%s-gateway", getStage()))
 
-	http.Handle("/color", xray.Handler(xraySegmentNamer, &colorHandler{}))
-	http.Handle("/color/clear", xray.Handler(xraySegmentNamer, &clearColorStatsHandler{}))
+	http.Handle("/tag", xray.Handler(xraySegmentNamer, &tagHandler{}))
+	http.Handle("/tag/clear", xray.Handler(xraySegmentNamer, &clearTagStatsHandler{}))
 	http.Handle("/tcpecho", xray.Handler(xraySegmentNamer, &tcpEchoHandler{}))
 	http.Handle("/ping", xray.Handler(xraySegmentNamer, &pingHandler{}))
 	log.Fatal(http.ListenAndServe(":"+getServerPort(), nil))
