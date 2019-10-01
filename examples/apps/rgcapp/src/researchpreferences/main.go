@@ -215,7 +215,7 @@ func main() {
 	log.Println("Using search-service at " + searchServiceEndpoint)
 	log.Println("Using tcp-echo at " + tcpEchoEndpoint)
 
-	xraySegmentNamer := xray.NewFixedSegmentNamer(fmt.Sprintf("%s-gateway", getStage()))
+	xraySegmentNamer := xray.NewFixedSegmentNamer(fmt.Sprintf("%s-researchpreferences", getStage()))
 
 	http.Handle("/tag", xray.Handler(xraySegmentNamer, &tagHandler{}))
 	http.Handle("/tag/clear", xray.Handler(xraySegmentNamer, &clearTagStatsHandler{}))

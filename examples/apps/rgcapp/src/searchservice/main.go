@@ -43,7 +43,7 @@ func getStage() string {
 type tagHandler struct{}
 
 func (h *tagHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	log.Println("color requested, responding with", getTag())
+	log.Println("tag requested, responding with", getTag())
 	fmt.Fprint(writer, getTag())
 }
 

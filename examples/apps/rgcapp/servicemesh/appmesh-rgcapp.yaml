@@ -177,7 +177,7 @@ Resources:
           VirtualNode:
             VirtualNodeName: tcpecho-vn
 
-  ColorGatewayVirtualNode:
+  ResearchPreferencesVirtualNode:
     Type: AWS::AppMesh::VirtualNode
     DependsOn:
       - SearchServiceVirtualService

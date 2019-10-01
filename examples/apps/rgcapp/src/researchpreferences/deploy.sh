@@ -14,7 +14,7 @@ if [ -z $AWS_DEFAULT_REGION ]; then
 fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-RESEARCH_PREFERENCES_IMAGE=${RESEARCH_PREFERENCES_IMAGE:-"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/color/gateway"}
+RESEARCH_PREFERENCES_IMAGE=${RESEARCH_PREFERENCES_IMAGE:-"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/rgc/researchpreferences"}
 GO_PROXY=${GO_PROXY:-"https://proxy.golang.org"}
 
 # build

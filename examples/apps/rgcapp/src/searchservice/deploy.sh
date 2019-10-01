@@ -14,7 +14,7 @@ if [ -z $AWS_DEFAULT_REGION ]; then
 fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-SEARCH_SERVICE_IMAGE=${SEARCH_SERVICE_IMAGE:-"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/color/teller"}
+SEARCH_SERVICE_IMAGE=${SEARCH_SERVICE_IMAGE:-"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/rgc/searchservice"}
 GO_PROXY=${GO_PROXY:-"https://proxy.golang.org"}
 
 # build
