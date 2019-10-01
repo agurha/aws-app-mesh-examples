@@ -5,11 +5,11 @@
             "action": {
                 "weightedTargets": [
                     {
-                        "virtualNode": "searchservice-black-vn",
+                        "virtualNode": "searchservice-tesla-vn",
                         "weight": 8
                     },
                     {
-                        "virtualNode": "searchservice-blue-vn",
+                        "virtualNode": "searchservice-apple-vn",
                         "weight": 2
                     }
                 ]

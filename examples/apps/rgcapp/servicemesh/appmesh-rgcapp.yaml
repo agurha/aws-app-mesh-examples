@@ -14,11 +14,11 @@ Parameters:
 
 Resources:
 
-  SearchServiceBlackVirtualNode:
+  SearchServiceTeslaVirtualNode:
     Type: AWS::AppMesh::VirtualNode
     Properties:
       MeshName: !Ref AppMeshMeshName
-      VirtualNodeName: searchservice-black-vn
+      VirtualNodeName: searchservice-tesla-vn
       Spec:
         Listeners:
           - PortMapping:
@@ -33,13 +33,13 @@ Resources:
               IntervalMillis: 5000
         ServiceDiscovery:
           DNS:
-            Hostname: !Sub "searchservice-black.${ServicesDomain}"
+            Hostname: !Sub "searchservice-tesla.${ServicesDomain}"
 
-  SearchServiceBlueVirtualNode:
+  SearchServiceAppleVirtualNode:
     Type: AWS::AppMesh::VirtualNode
     Properties:
       MeshName: !Ref AppMeshMeshName
-      VirtualNodeName: searchservice-blue-vn
+      VirtualNodeName: searchservice-apple-vn
       Spec:
         Listeners:
           - PortMapping:
@@ -54,13 +54,13 @@ Resources:
               IntervalMillis: 5000
         ServiceDiscovery:
           DNS:
-            Hostname: !Sub "searchservice-blue.${ServicesDomain}"
+            Hostname: !Sub "searchservice-apple.${ServicesDomain}"
 
-  SearchServiceRedVirtualNode:
+  SearchServiceDropboxVirtualNode:
     Type: AWS::AppMesh::VirtualNode
     Properties:
       MeshName: !Ref AppMeshMeshName
-      VirtualNodeName: searchservice-red-vn
+      VirtualNodeName: searchservice-dropbox-vn
       Spec:
         Listeners:
           - PortMapping:
@@ -75,13 +75,13 @@ Resources:
               IntervalMillis: 5000
         ServiceDiscovery:
           DNS:
-            Hostname: !Sub "searchservice-red.${ServicesDomain}"
+            Hostname: !Sub "searchservice-dropbox.${ServicesDomain}"
 
-  SearchServiceWhiteVirtualNode:
+  SearchServiceMicrosoftVirtualNode:
     Type: AWS::AppMesh::VirtualNode
     Properties:
       MeshName: !Ref AppMeshMeshName
-      VirtualNodeName: searchservice-white-vn
+      VirtualNodeName: searchservice-microsoft-vn
       Spec:
         Listeners:
           - PortMapping:
@@ -113,9 +113,9 @@ Resources:
     Type: AWS::AppMesh::Route
     DependsOn:
       - SearchServiceVirtualRouter
-      - SearchServiceWhiteVirtualNode
-      - SearchServiceRedVirtualNode
-      - SearchServiceBlueVirtualNode
+      - SearchServiceMicrosoftVirtualNode
+      - SearchServiceDropboxVirtualNode
+      - SearchServiceAppleVirtualNode
     Properties:
       MeshName: !Ref AppMeshMeshName
       VirtualRouterName: searchservice-vr
@@ -124,11 +124,11 @@ Resources:
         HttpRoute:
           Action:
             WeightedTargets:
-              - VirtualNode: searchservice-white-vn
+              - VirtualNode: searchservice-microsoft-vn
                 Weight: 1
-              - VirtualNode: searchservice-blue-vn
+              - VirtualNode: searchservice-apple-vn
                 Weight: 1
-              - VirtualNode: searchservice-red-vn
+              - VirtualNode: searchservice-dropbox-vn
                 Weight: 1
           Match:
             Prefix: "/"
